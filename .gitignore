@@ -1,0 +1,65 @@
+# ============================================
+# Vagabond .gitignore
+# ============================================
+
+# ---------- Secrets & Environment ----------
+# NIEMALS Secrets committen!
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# ---------- Python / Backend ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# ---------- Android / Kotlin ----------
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/*.apk
+android/*.aab
+
+# ---------- IDE ----------
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.code-workspace
+
+# ---------- Docker ----------
+docker-volumes/
+
+# ---------- OS ----------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+*~
+.nfs*
+
+# ---------- Geodaten (zu groß für Git) ----------
+*.pbf
+*.mbtiles
+*.rd5
+*.osm
+
+# ---------- Logs ----------
+*.log
+logs/
