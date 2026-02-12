@@ -62,4 +62,4 @@ $RECYCLE.BIN/
 
 # ---------- Logs ----------
 *.log
-logs/
+logs/data/

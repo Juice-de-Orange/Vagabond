@@ -1,0 +1,70 @@
+services:
+  db:
+    image: postgis/postgis:17-3.5
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  redis:
+    image: redis:8-alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+
+  graphhopper:
+    image: israelhikingmap/graphhopper:latest
+    restart: unless-stopped
+    command: -c /data/config.yml -i /data/alps-latest.osm.pbf -o /data/graph-cache
+    volumes:
+      - ./config/graphhopper.yml:/data/config.yml
+      - ./data/alps-latest.osm.pbf:/data/alps-latest.osm.pbf
+      - ghdata:/data/graph-cache
+    environment:
+      - JAVA_OPTS=-Xmx8g -Xms2g
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8989/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 600s
+    networks:
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 9G
+
+volumes:
+  pgdata:
+  redisdata:
+  ghdata:
+
+networks:
+  backend:
