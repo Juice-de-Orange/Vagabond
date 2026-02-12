@@ -1,0 +1,24 @@
+graphhopper:
+  datareader.file: /data/alps-latest.osm.pbf
+  graph.location: /data/graph-cache
+
+  profiles:
+    - name: hike
+      custom_model_files: [hike.json]
+
+  graph.encoded_values: foot_access,foot_average_speed,foot_priority,hike_rating,surface,road_class,country,foot_road_access,foot_network
+
+  import.osm.ignored_highways: motorway,trunk
+
+  graph.elevation.provider: srtm
+  graph.elevation.cache_dir: /data/elevation-cache
+
+server:
+  application_connectors:
+    - type: http
+      port: 8989
+      bind_host: 0.0.0.0
+  admin_connectors:
+    - type: http
+      port: 8990
+      bind_host: 0.0.0.0
