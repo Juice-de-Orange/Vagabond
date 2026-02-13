@@ -63,3 +63,4 @@ $RECYCLE.BIN/
 # ---------- Logs ----------
 *.log
 logs/data/
+*.egg-info/
